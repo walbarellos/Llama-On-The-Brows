@@ -2,9 +2,8 @@
 
 Terminal Web Interativo para LLaMA 3: Converse com o modelo LLaMA 3 usando a API local do Ollama ou a API GROQ, diretamente no seu navegador. Desfrute de uma experiência completa com histórico de comandos, estilo personalizado e recursos extras!
 
-[Image of Terminal Web Llama 3 - Ollama]
-
-[Image of Terminal Web Llama 3 - GROQ]
+![image](https://github.com/user-attachments/assets/00cf3ff1-8546-4036-91f1-d80811c3ca72)
+![image](https://github.com/user-attachments/assets/39af5bdd-e5de-4572-96dc-14b846552d4c)
 
 ---
 
@@ -36,6 +35,20 @@ Clone o repositório ou baixe os arquivos do projeto:
 git clone [https://github.com/seu-usuario/terminal-llama.git](https://github.com/seu-usuario/terminal-llama.git)
 cd terminal-llama
 
+Execute Localmente
+
+Para evitar problemas de CORS, execute um servidor local simples com Python:
+
+```bash
+python3 -m http.server
+
+Em seguida, abra o terminal no seu navegador através do seguinte link:
+
+```bash
+http://localhost:8000
+
+
+
 
 3.📁 Estrutura do ProjetoA estrutura de arquivos do projeto é a seguinte:terminal-llama/ 
  ├── index.html 
@@ -57,8 +70,4 @@ cd terminal-llama
  Persistência do prompt: O prompt personalizado definido pelo comando /prompt é salvo junto com a sessão de conversa.
 
 
-![image](https://github.com/user-attachments/assets/00cf3ff1-8546-4036-91f1-d80811c3ca72)
-![image](https://github.com/user-attachments/assets/39af5bdd-e5de-4572-96dc-14b846552d4c)
-
-
-
+@walbarellos
