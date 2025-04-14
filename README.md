@@ -53,16 +53,12 @@ http://localhost:8000
 
 
 
-3.📁 Estrutura do ProjetoA estrutura de arquivos do projeto é a seguinte:terminal-llama/ 
- ├── index.html 
- ├── style/ 
- │   ├── main.css 
- │   └── main.scss (opcional) 
- ├── js/ 
- │   └── app.js 
- ├── assets/ 
- │   └── (ícones, fontes, etc.) 
- └── README.md 
+## 3.📁 A estrutura de arquivos do projeto é a seguinte:
+ terminal-llama/
+├── index.html
+├── jspdf.js/
+└── README.md
+
 
 💡 Dicas ÚteisEvite erros de CORS:  
 
