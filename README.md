@@ -39,11 +39,9 @@ Execute Localmente
 
 Para evitar problemas de CORS, execute um servidor local simples com Python:
 
-```bash
 python3 -m http.server
 
 Em seguida, abra o terminal no seu navegador através do seguinte link:
-
 ```bash
 http://localhost:8000
 
