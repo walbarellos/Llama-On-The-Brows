@@ -26,25 +26,28 @@ Terminal Web Interativo para LLaMA 3: Converse com o modelo LLaMA 3 usando a API
 ---
 
 ### 🚀 Primeiros Passos
-
 #### 1. Obtenha o Projeto
 
 Clone o repositório ou baixe os arquivos do projeto:
 
-```bash
 git clone [https://github.com/seu-usuario/terminal-llama.git](https://github.com/seu-usuario/terminal-llama.git)
+
+```bash
 cd terminal-llama
+```
 
-Execute Localmente
-
-Para evitar problemas de CORS, execute um servidor local simples com Python:
+#### Execute Localmente
+#### Para evitar problemas de CORS, execute um servidor local simples com Python:
+```python
 
 python3 -m http.server
 
+```
 Em seguida, abra o terminal no seu navegador através do seguinte link:
+
 ```bash
 http://localhost:8000
-
+```
 
 
 
@@ -61,7 +64,7 @@ http://localhost:8000
 
 💡 Dicas ÚteisEvite erros de CORS:  
 
- Utilize sempre http://localhost:8000 para acessar o terminal e evitar problemas de segurança relacionados a CORS. 
+ Utilize sempre *http://localhost:8000* para acessar o terminal e evitar problemas de segurança relacionados a CORS. 
 
  Transforme em app de desktop: Se desejar, você pode integrar o projeto com o Electron para criar uma aplicação de desktop. 
 
