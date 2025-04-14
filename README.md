@@ -29,7 +29,6 @@ cd terminal-llama
 
 ### 2. Rodar localmente com Python (para evitar problemas de CORS)
 
-```bash
 python3 -m http.server
 Acesse no navegador: http://localhost:8000
 
