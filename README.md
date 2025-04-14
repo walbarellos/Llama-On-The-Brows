@@ -30,7 +30,9 @@ Terminal Web Interativo para LLaMA 3: Converse com o modelo LLaMA 3 usando a API
 
 Clone o repositório ou baixe os arquivos do projeto:
 
+```bash
 git clone [https://github.com/seu-usuario/terminal-llama.git](https://github.com/seu-usuario/terminal-llama.git)
+```
 
 ```bash
 cd terminal-llama
