@@ -1,108 +1,66 @@
-# Llama-On-The-Brows
+# 🦙 Llama-On-The-Brows
 
-✅ Verificação rápida:
-A seguir, um checklist para garantir que o terminal funcione corretamente com ambas as APIs:
+Interface de terminal web para conversar com o modelo **LLaMA 3**, usando tanto a **API local do Ollama** quanto a **GROQ API** — tudo no navegador, com estilo, histórico e recursos extras!
 
-1. Llama 3 via Ollama (Local)
-Certifique-se de que o Ollama está rodando localmente:
+---
 
-bash
-Copiar
-Editar
-ollama run llama3
-A URL correta (http://127.0.0.1:11434/api/chat) está configurada. ✅
+## ✅ Funcionalidades
 
-O corpo da requisição está no formato esperado:
+- 🎯 Suporte a **Ollama local**
+- ☁️ Suporte a **GROQ via API**
+- 🔁 Histórico de comandos (setas ↑ ↓)
+- 🛠️ Comando `/prompt` para alterar o prompt do sistema
+- 💾 Comando `/save` para salvar sessões (em localStorage)
+- 📂 Comando `/load` para carregar sessões salvas
+- 📝 Exportação de sessões em **Markdown**
+- 📄 Exportação em **PDF estilizado** (em breve)
+- 🌗 Modo escuro/claro com toggle
+- 📱 Responsivo (funciona no celular)
 
-json
-Copiar
-Editar
-{
-  "model": "llama3",
-  "messages": [{ "role": "user", "content": "texto aqui" }],
-  "stream": false
-}
-2. GROQ API
-O endpoint está correto: https://api.groq.com/openai/v1/chat/completions. ✅
+---
 
-A requisição está bem montada com headers e body corretos.
+## 🚀 Como usar
 
-A chave de API foi embutida corretamente no header Authorization.
+### 1. Clonar ou baixar o projeto
 
-🔧 Sugestão: Melhorar seleção do modelo para GROQ
-Se você quiser deixar ainda mais flexível, pode permitir a seleção de modelos diferentes via botão ou comando /set model llama3-8b-8192. Mas como o GROQ já roda o LLaMA3-8b-8192 por padrão (geralmente com o nome "llama3-8b-8192"), isso pode ser só um detalhe.
+```bash
+git clone https://github.com/seu-usuario/terminal-llama.git
+cd terminal-llama
 
-No trecho abaixo, o modelName está fixo como "llama3":
+### 2. Rodar localmente com Python (para evitar problemas de CORS)
 
-js
-Copiar
-Editar
-let modelName = 'llama3';
-Você pode alterar isso para:
-
-js
-Copiar
-Editar
-let modelName = currentApi === 'groq' ? 'llama3-8b-8192' : 'llama3';
-🧪 Teste rápido
-Se você abrir o terminal web e digitar:
-
-css
-Copiar
-Editar
-Olá, qual a capital da França?
-Com a API da Ollama: Verifique se o serviço está de fato rodando localmente.
-
-Com a GROQ: Já vai funcionar direto — contanto que a chave esteja válida e sem rate limit.
-
-2. 🔐 CORS bloqueando requisições
-Como seu HTML está sendo servido provavelmente por file:// (ou algum outro host local), o navegador bloqueia chamadas cross-origin (CORS). A API local da Ollama não tem CORS liberado por padrão.
-
-💡 Soluções:
-🧪 Teste via servidor local (ex: usando o Python para servir o HTML):
-
-bash
-Copiar
-Editar
+```bash
 python3 -m http.server
-Depois acesse: http://localhost:8000/index.html
+Acesse no navegador: http://localhost:8000
 
-✅ Ou você pode liberar CORS na Ollama com um proxy (se quiser, posso montar isso).
+🔌 Integrações com APIs
+
+🦙 Llama 3 via Ollama (Local)
+
+Instale e rode o Ollama: https://ollama.com
+
+Baixe o modelo LLaMA 3:
+
+ollama run llama3
 
 
-✅ O que vai ter no projeto:
-🔹 Interface web:
-HTML5 moderno
+ A interface está configurada para se conectar a:
 
-CSS (com possibilidade de usar Sass se quiser customizar depois)
+🧠 Comandos disponíveis
+/help ou /? → Mostra todos os comandos
 
-Layout bonitinho com terminal
+/prompt <texto> → Altera o prompt do sistema
 
-Light/Dark Mode (com toggle)
+/save → Salva a sessão atual
 
-🔹 Funcionalidades:
- Suporte a Ollama local
+/load → Carrega uma sessão salva
 
- Suporte a GROQ via API
+/export → Exporta a conversa em Markdown
 
- Histórico de comandos no terminal (teclas ↑ ↓)
+/clear → Limpa o terminal
 
- Comando /prompt para trocar prompt do sistema
+📁 Estrutura do Projeto
 
- Comando /save para salvar a conversa em .md
-
- Comando /load para carregar sessões
-
- Botão para exportar a conversa em PDF
-
- Salvamento automático no localStorage
-
- Interface responsiva (pra celular também)
-
-📁 Estrutura de arquivos:
-css
-Copiar
-Editar
 terminal-llama/
 ├── index.html
 ├── style/
@@ -111,5 +69,32 @@ terminal-llama/
 ├── js/
 │   └── app.js
 ├── assets/
-│   └── icons, fontes, etc.
+│   └── (ícones, fontes, etc.)
 └── README.md
+
+💡 Dicas
+Sempre use http://localhost:8000 para evitar erro Failed to fetch por CORS.
+
+Se quiser transformar isso num app de desktop, dá pra integrar com Electron!
+
+O prompt personalizado é salvo junto com a sessão —
+
+
+
+
+
+
+
+
+
+
+http://127.0.0.1:11434/api/chat
+🌐 GROQ API
+Obtenha uma chave de API em: https://console.groq.com
+
+A interface usa o endpoint:
+
+bash
+Copiar
+Editar
+https://api.groq.com/openai/v1/chat/completions
