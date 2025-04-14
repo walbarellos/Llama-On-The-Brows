@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Web Llama 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: #080808;
+            color: #eee;
+            font-family: 'Fira Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .terminal-container {
+            background-color: #0f0f0f;
+            border: 2px solid #3b82f6;
+            padding: 20px;
+            width: 85%;
+            max-width: 900px;
+            height: 70%;
+            max-height: 700px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .terminal-title {
+            color: #e0f2fe;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3b82f6;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+        }
+
+        .terminal-title i {
+            margin-right: 10px;
+            font-size: 1.6em;
+            color: #3b82f6;
+        }
+
+        #terminal-output {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            line-height: 1.6em;
+            word-wrap: break-word;
+            color: #f5f5f5;
+        }
+
+        #terminal-input {
+            display: flex;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid #3b82f6;
+        }
+
+        #terminal-input > span {
+            color: #e0f7fa;
+            margin-right: 10px;
+            text-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+        }
+
+        #user-input {
+            flex-grow: 1;
+            background-color: #1d4ed8;
+            color: #f5f5f5;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Fira Mono', monospace;
+            font-size: 1.1em;
+            outline: none;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        #user-input:focus {
+            border: 2px solid #60a5fa;
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.8);
+        }
+
+        .command {
+            color: #a7f3d0;
+            text-shadow: 0 0 7px rgba(52, 211, 153, 0.8);
+        }
+
+        .output {
+            color: #f5f5f5;
+        }
+
+        .error {
+            color: #f87171;
+            text-shadow: 0 0 7px rgba(248, 113, 113, 0.8);
+        }
+
+        .prompt {
+            color: #fcd34d;
+            margin-right: 10px;
+            text-shadow: 0 0 5px rgba(252, 211, 77, 0.5);
+        }
+
+        .input-line {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        #clear-button {
+            background-color: #4338ca;
+            color: #f5f5f5;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Fira Mono', monospace;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0 0 10px rgba(67, 56, 202, 0.5);
+            margin-left: 10px;
+            box-shadow: 0 0 10px rgba(67, 56, 202, 0.5);
+            text-shadow: 0 0 7px rgba(67, 56, 202, 0.8);
+        }
+
+        #clear-button:hover {
+            background-color: #6d28d9;
+            box-shadow: 0 0 15px rgba(109, 40, 217, 0.8);
+        }
+
+        /* Estilos para os botões de comando */
+        .command-button {
+            background-color: #3b82f6;
+            color: #f5f5f5;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Fira Mono', monospace;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0 0 10px rgba(59, 130, 246, 0.5);
+            margin: 5px;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            text-shadow: 0 0 7px rgba(59, 130, 246, 0.8);
+        }
+
+        .command-button:hover {
+            background-color: #60a5fa;
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.8);
+        }
+
+        .command-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #3b82f6;
+        }
+        #api-mode-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #3b82f6;
+        }
+
+        #ollama-button, #groq-button {
+            background-color: #3b82f6;
+            color: #f5f5f5;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Fira Mono', monospace;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0 0 10px rgba(59, 130, 246, 0.5);
+            margin: 5px;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            text-shadow: 0 0 7px rgba(59, 130, 246, 0.8);
+        }
+
+        #ollama-button:hover, #groq-button:hover {
+            background-color: #60a5fa;
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.8);
+        }
+
+        #ollama-button.active {
+            background-color: #1e40af;
+            box-shadow: 0 0 15px rgba(30, 64, 175, 0.8);
+        }
+        #groq-button.active{
+            background-color: #1e40af;
+            box-shadow: 0 0 15px rgba(30, 64, 175, 0.8);
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="terminal-container">
+        <div class="terminal-title">
+            <i class="fas fa-terminal"></i> Terminal Web Llama 3
+        </div>
+        <div id="terminal-output">
+            <div class="input-line">
+                <span class="prompt">>>></span>
+                <span class="output">Bem-vindo ao Terminal Web Llama 3!</span>
+            </div>
+            <div class="input-line">
+                <span class="prompt">>>></span>
+                <span class="output">Digite '/?' ou '/help' para ver os comandos disponíveis.</span>
+            </div>
+        </div>
+        <div id="terminal-input">
+            <span>>>></span>
+            <input type="text" id="user-input" placeholder="Digite seu comando aqui...">
+            <button id="clear-button">Clear</button>
+        </div>
+        <div class="command-buttons-container">
+            <button class="command-button" data-command="/help">Help</button>
+            <button class="command-button" data-command="/browserinfo">Browser Info</button>
+            <button class="command-button" data-command="/clear">Clear Terminal</button>
+            <button class="command-button" data-command="/version">Version</button>
+            <button class="command-button" data-command="/set">Set</button>
+            <button class="command-button" data-command="/show">Show</button>
+        </div>
+        <div id="api-mode-buttons">
+            <button id="ollama-button" class="api-mode-button active" data-api="ollama">Usar Ollama API</button>
+            <button id="groq-button" class="api-mode-button" data-api="groq">Usar GROQ API</button>
+        </div>
+    </div>
+    <script>
+        const terminalOutput = document.getElementById('terminal-output');
+        const userInput = document.getElementById('user-input');
+        const clearButton = document.getElementById('clear-button');
+        const commandButtonsContainer = document.querySelector('.command-buttons-container');
+        const ollamaButton = document.getElementById('ollama-button');
+        const groqButton = document.getElementById('groq-button');
+
+        let currentApi = 'ollama'; // Modo de API padrão é Ollama
+        let ollamaApiKey = ''; // Chave da API Ollama (pode ser definida posteriormente)
+        let groqApiKey = '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'; // Chave da API GROQ
+
+        // URL da API do Ollama
+        const ollamaApiUrl = 'http://127.0.0.1:11434/api/chat';
+        const groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions'; // Endpoint correto da API do GROQ
+
+
+        // Função para obter a resposta do Llama 3
+        function getLlama3Response(command) {
+            let modelName = currentApi === 'groq' ? 'llama3-8b-8192' : 'llama3';
+            let messages = [{ role: 'user', content: command }];
+            let requestBody = {
+                model: modelName,
+                messages: messages,
+                stream: false
+            };
+
+            switch (command.toLowerCase()) {
+                case '/clear':
+                    terminalOutput.innerHTML = '';
+                    addLineToTerminal('>>>', 'Terminal limpo.', 'output');
+                    return Promise.resolve('');
+                case '/help':
+                case '/?':
+                    const helpText = `Comandos disponíveis: <br>
+                                        <span class="command">/set</span> - Define variáveis de sessão<br>
+                                        <span class="command">/show</span> - Mostra informações do modelo<br>
+                                        <span class="command">/load &lt;modelo&gt;</span> - Carrega um modelo<br>
+                                        <span class="command">/save &lt;modelo&gt;</span> - Salva sua sessão atual<br>
+                                        <span class="command">/clear</span> - Limpa o terminal<br>
+                                        <span class="command">/bye</span> - Sai<br>
+                                        <span class="command">/browserinfo</span> - Exibe informações do navegador<br>
+                                        <span class="command">/version</span> - Exibe a versão do Llama 3 (Simulado)`;
+                    return Promise.resolve(helpText);
+                case '/browserinfo':
+                    const browserInfo = `Navegador: ${navigator.userAgent}<br>
+                                                            Plataforma: ${navigator.platform}<br>
+                                                            Cookies habilitados: ${navigator.cookieEnabled}`;
+                    return Promise.resolve(browserInfo);
+                case '/version':
+                    return Promise.resolve('Llama 3 v1.0 (Simulado)');
+                case '/set':
+                case '/show':
+                    break;
+                default:
+                    break;
+            }
+
+            let apiUrl = ollamaApiUrl;
+            let headers = { 'Content-Type': 'application/json' };
+
+            if (currentApi === 'groq') {
+                apiUrl = groqApiUrl;
+                headers['Authorization'] = `Bearer ${groqApiKey}`;
+            }
+
+            return fetch(apiUrl, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Erro na requisição: ${response.status} - ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(`Resposta da API (${currentApi}):`, data);
+                let responseText = '';
+                if (currentApi === 'ollama') {
+                    if (data && data.message && data.message.content) {
+                        responseText = data.message.content;
+                    } else {
+                        throw new Error("Formato de resposta inesperado da API do Ollama.");
+                    }
+                } else if (currentApi === 'groq') {
+                    if (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                         responseText = data.choices[0].message.content;
+                    } else {
+                        throw new Error("Formato de resposta inesperado da API do GROQ.");
+                    }
+                }
+                return responseText;
+
+            })
+            .catch(error => {
+                console.error(`Erro ao obter resposta da API (${currentApi}):`, error);
+                return `Erro: ${error.message}`;
+            });
+        }
+
+        // Adiciona uma nova linha ao terminal
+        function addLineToTerminal(prompt, text, type = 'output') {
+            const newLine = document.createElement('div');
+            newLine.className = 'input-line';
+            const promptSpan = document.createElement('span');
+            promptSpan.className = 'prompt';
+            promptSpan.textContent = prompt;
+            const textSpan = document.createElement('span');
+            textSpan.className = type;
+            textSpan.innerHTML = text;
+            newLine.appendChild(promptSpan);
+            newLine.appendChild(textSpan);
+            terminalOutput.appendChild(newLine);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        // Lida com a entrada do usuário
+        userInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const command = userInput.value;
+                addLineToTerminal('>>>', command, 'command');
+                userInput.value = '';
+                getLlama3Response(command)
+                    .then(response => {
+                        if (response !== '') {
+                            addLineToTerminal('<<<', response, 'output');
+                        }
+                    })
+                    .catch(error => {
+                        addLineToTerminal('<<<', error, 'error');
+                    });
+            }
+        });
+
+        // Limpa o terminal
+        clearButton.addEventListener('click', () => {
+            terminalOutput.innerHTML = '';
+            addLineToTerminal('>>>', 'Terminal limpo.', 'output');
+        });
+
+        // Lida com os cliques nos botões de comando
+        commandButtonsContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('command-button')) {
+                const command = event.target.dataset.command;
+                addLineToTerminal('>>>', command, 'command');
+                getLlama3Response(command)
+                    .then(response => {
+                        if (response !== '') {
+                            addLineToTerminal('<<<', response, 'output');
+                        }
+                    })
+                    .catch(error => {
+                        addLineToTerminal('<<<', error, 'error');
+                    });
+                }
+        });
+
+        // Lida com a seleção da API
+        ollamaButton.addEventListener('click', () => {
+            currentApi = 'ollama';
+            ollamaButton.classList.add('active');
+            groqButton.classList.remove('active');
+        });
+
+        groqButton.addEventListener('click', () => {
+            currentApi = 'groq';
+            groqButton.classList.add('active');
+            ollamaButton.classList.remove('active');
+        });
+
+        // Foca no campo de entrada ao carregar a página
+        userInput.focus();
+    </script>
+</body>
+</html>
