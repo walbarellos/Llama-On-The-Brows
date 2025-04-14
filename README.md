@@ -1,7 +1,7 @@
 # 🦙 Llama-On-The-Brows
 
 Interface de terminal web para conversar com o modelo **LLaMA 3**, usando tanto a **API local do Ollama** quanto a **GROQ API** — tudo no navegador, com estilo, histórico e recursos extras!
-![image](https://github.com/user-attachments/assets/4f398af6-4cbe-49e3-989f-fd7b2b3f5578)
+![image](https://github.com/user-attachments/assets/2381acb4-5c5e-4fe0-a338-e01108c08b42)
 
 ---
 
